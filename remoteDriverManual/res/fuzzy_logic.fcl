@@ -43,9 +43,9 @@ END_FUZZIFY
 
 // Defuzzify output variable 'rotation'
 DEFUZZIFY rotation
-	TERM left := -1;
-	TERM zero := 0;
-	TERM right := 1;
+	TERM left := sigm -4 -0.5;
+	TERM zero := gauss 0 0.5;
+	TERM right := sigm 4 0.5;
 	METHOD : COG;
 	DEFAULT := 0;
 END_DEFUZZIFY
@@ -69,3 +69,6 @@ RULEBLOCK one
 	RULE 10 : IF x IS right AND angle IS north THEN rotation IS left ;
 	RULE 11 : IF x IS right AND angle IS west THEN rotation IS left ;
 	RULE 12 : IF x IS right AND angle IS south THEN rotation IS right ;
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
