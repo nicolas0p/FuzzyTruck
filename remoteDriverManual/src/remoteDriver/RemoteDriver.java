@@ -7,7 +7,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.StringTokenizer;
- 
+
+import net.sourceforge.jFuzzyLogic.FIS;
+
 public class RemoteDriver {
 	
 	static int port = 4321;
@@ -34,6 +36,17 @@ public class RemoteDriver {
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
         String fromServer;
  
+
+        String fileName = "res/fuzzy_logic.fcl";
+        FIS fis = FIS.load(fileName,true);
+
+        if( fis == null ) { // Error while loading?
+        	System.err.println("Can't load file: '" + fileName + "'");
+        	return;
+        }
+        
+        //fis.chart();
+        
         double x, y;
         double angle;
         
@@ -49,22 +62,19 @@ public class RemoteDriver {
         	
         	/////////////////////////////////////////////////////////////////////////////////////
         	// TODO sua lógica fuzzy vai aqui use os valores de x,y e angle obtidos. x e y estao em [0,1] e angulo [0,360)
+        	fis.setVariable("x", x);
+        	fis.setVariable("y", y);
+        	fis.setVariable("angle", angle);
         	
+        	fis.evaluate();
         	
-        	
+        	double resultado = fis.getVariable("rotation").getLatestDefuzzifiedValue();
 			
-        	double teste = Double.valueOf(stdIn.readLine());
-        	
-        	
-        	
-        	
-        	
-        	double respostaDaSuaLogica = teste; // atribuir um valor entre -1 e 1 para virar o volante pra esquerda ou direita.
-        	
+        	System.out.println("O ângulo de rotação é" + resultado);
         	
         	///////////////////////////////////////////////////////////////////////////////// Acaba sua modificacao aqui
         	// envio da acao do volante
-        	out.println(respostaDaSuaLogica);
+        	out.println(resultado);
         	
             // requisicao da posicao do caminhao        	
         	out.println("r");	

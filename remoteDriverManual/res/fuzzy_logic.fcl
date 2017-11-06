@@ -1,0 +1,14 @@
+// Block definition (there may be more than one block per file)
+FUNCTION_BLOCK driver
+
+// Define input variables
+VAR_INPUT
+    x : REAL;
+    y : REAL;
+END_VAR
+
+// Define output variable
+VAR_OUTPUT
+    rotation : REAL;
+END_VAR
+
