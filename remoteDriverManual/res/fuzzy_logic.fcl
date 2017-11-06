@@ -5,6 +5,7 @@ FUNCTION_BLOCK driver
 VAR_INPUT
     x : REAL;
     y : REAL;
+    angle : REAL;
 END_VAR
 
 // Define output variable
@@ -12,3 +13,59 @@ VAR_OUTPUT
     rotation : REAL;
 END_VAR
 
+// Fuzzify input variable 'x'
+FUZZIFY x
+    TERM left := sigm -4 0.25;
+    TERM middle := gauss 0 0.5;
+    TERM right := sigm 4 0.75;
+END_FUZZIFY
+
+// Fuzzify input variable 'y'
+FUZZIFY y
+    TERM top := sigm -4 0.25;
+    TERM middle := gauss 0 0.5;
+    TERM bottom := sigm 4 0.75;
+END_FUZZIFY
+
+// Fuzzify input variable 'angle'
+FUZZIFY angle
+    TERM north := gauss 90 10;
+    TERM northeast := gauss 45 10;
+    TERM northwest := gauss 135 10;
+    
+    TERM east := gauss 0 10;
+    TERM west := gauss 180 10;
+    
+    TERM south := gauss 270 10;
+    TERM southeast := gauss 315 10;
+    TERM southwest := gauss 225 10;
+END_FUZZIFY
+
+// Defuzzify output variable 'rotation'
+DEFUZZIFY rotation
+	TERM left := -1;
+	TERM zero := 0;
+	TERM right := 1;
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+RULEBLOCK one
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+	
+	RULE 1 : IF x IS left AND angle IS east THEN rotation IS right ;
+	RULE 2 : IF x IS left AND angle IS north THEN rotation IS right;
+	RULE 3 : IF x IS left AND angle IS west THEN rotation IS zero ;
+	RULE 4 : IF x IS left AND angle IS south THEN rotation IS left ;
+	
+	RULE 5 : IF x IS middle AND angle IS east THEN rotation IS right;
+	RULE 6 : IF x IS middle AND angle IS north THEN rotation IS zero ;
+	RULE 7 : IF x IS middle AND angle IS west THEN rotation IS left ;
+	RULE 8 : IF x IS middle AND angle IS south THEN rotation IS right ;
+	
+	RULE 9 : IF x IS right AND angle IS east THEN rotation IS zero ;
+	RULE 10 : IF x IS right AND angle IS north THEN rotation IS left ;
+	RULE 11 : IF x IS right AND angle IS west THEN rotation IS left ;
+	RULE 12 : IF x IS right AND angle IS south THEN rotation IS right ;

@@ -41,7 +41,7 @@ public class RemoteDriver {
         FIS fis = FIS.load(fileName,true);
 
         if( fis == null ) { // Error while loading?
-        	System.err.println("Can't load file: '" + fileName + "'");
+        	System.out.println("Can't load file: '" + fileName + "'");
         	return;
         }
         
