@@ -15,9 +15,9 @@ END_VAR
 
 // Fuzzify input variable 'x'
 FUZZIFY x
-    TERM left := trape 0 0 0.2 0.45;
+    TERM left := trape 0 0 0.15 0.45;
     TERM middle := trape 0.3 0.45 0.55 0.7;
-    TERM right := trape 0.55 0.8 1 1;
+    TERM right := trape 0.55 0.85 1 1;
 END_FUZZIFY
 
 // Fuzzify input variable 'y'
@@ -45,7 +45,7 @@ END_FUZZIFY
 DEFUZZIFY rotation
 	TERM left := trape -1 -1 -0.6 -0.1;
 	//TERM semileft := trape -0.8 -0.6 -0.4 -0.2;
-	TERM zero := trape -0.2 0 0 0.2;
+	TERM zero := trape -0.15 0 0 0.15;
 	//TERM semiright := trape 0.2 0.4 0.6 0.8;
 	TERM right := trape 0.1 0.6 1 1;
 	METHOD : COG;
