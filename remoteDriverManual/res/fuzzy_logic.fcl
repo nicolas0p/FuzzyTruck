@@ -15,37 +15,39 @@ END_VAR
 
 // Fuzzify input variable 'x'
 FUZZIFY x
-    TERM left := sigm -4 0.25;
-    TERM middle := gauss 0 0.5;
-    TERM right := sigm 4 0.75;
+    TERM left := trape 0 0 0.2 0.45;
+    TERM middle := trape 0.3 0.45 0.55 0.7;
+    TERM right := trape 0.55 0.8 1 1;
 END_FUZZIFY
 
 // Fuzzify input variable 'y'
 FUZZIFY y
-    TERM top := sigm -4 0.25;
-    TERM middle := gauss 0 0.5;
-    TERM bottom := sigm 4 0.75;
+    TERM top := trape 0 0 0.2 0.5;
+    TERM middle := trape 0.3 0.45 0.55 0.7;
+    TERM bottom := trape 0.5 0.8 1 1;
 END_FUZZIFY
 
 // Fuzzify input variable 'angle'
 FUZZIFY angle
-    TERM north := gauss 90 10;
-    TERM northeast := gauss 45 10;
-    TERM northwest := gauss 135 10;
+    TERM north := gauss 90 35;
+    //TERM northeast := gauss 45 10;
+    //TERM northwest := gauss 135 10;
     
-    TERM east := gauss 0 10;
-    TERM west := gauss 180 10;
+    TERM east := gauss 0 35;
+    TERM west := gauss 180 35;
     
-    TERM south := gauss 270 10;
-    TERM southeast := gauss 315 10;
-    TERM southwest := gauss 225 10;
+    TERM south := gauss 270 35;
+    //TERM southeast := gauss 315 10;
+    //TERM southwest := gauss 225 10;
 END_FUZZIFY
 
 // Defuzzify output variable 'rotation'
 DEFUZZIFY rotation
-	TERM left := sigm -4 -0.5;
-	TERM zero := gauss 0 0.5;
-	TERM right := sigm 4 0.5;
+	TERM left := trape -1 -1 -0.6 -0.1;
+	//TERM semileft := trape -0.8 -0.6 -0.4 -0.2;
+	TERM zero := trape -0.2 0 0 0.2;
+	//TERM semiright := trape 0.2 0.4 0.6 0.8;
+	TERM right := trape 0.1 0.6 1 1;
 	METHOD : COG;
 	DEFAULT := 0;
 END_DEFUZZIFY
@@ -64,11 +66,17 @@ RULEBLOCK one
 	RULE 6 : IF x IS middle AND angle IS north THEN rotation IS zero ;
 	RULE 7 : IF x IS middle AND angle IS west THEN rotation IS left ;
 	RULE 8 : IF x IS middle AND angle IS south THEN rotation IS right ;
+	//RULE 14: IF x IS middle AND angle IS northeast THEN rotation IS right ;
+	//RULE 15: IF x IS middle AND angle IS northwest THEN rotation IS left ;
 	
 	RULE 9 : IF x IS right AND angle IS east THEN rotation IS zero ;
 	RULE 10 : IF x IS right AND angle IS north THEN rotation IS left ;
 	RULE 11 : IF x IS right AND angle IS west THEN rotation IS left ;
 	RULE 12 : IF x IS right AND angle IS south THEN rotation IS right ;
+	
+	RULE 13 : IF y IS bottom AND angle IS north THEN rotation IS zero ;
+	
+	//RULE : IF x IS AND angle IS  THEN rotation IS ;
 END_RULEBLOCK
 
 END_FUNCTION_BLOCK

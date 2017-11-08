@@ -9,6 +9,7 @@ import java.net.UnknownHostException;
 import java.util.StringTokenizer;
 
 import net.sourceforge.jFuzzyLogic.FIS;
+import net.sourceforge.jFuzzyLogic.FunctionBlock;
 
 public class RemoteDriver {
 	
@@ -70,14 +71,14 @@ public class RemoteDriver {
         	
         	double resultado = fis.getVariable("rotation").getLatestDefuzzifiedValue();
 			
-        	System.out.println("O ângulo de rotação é" + resultado);
+        	System.out.println("O ângulo de rotação é " + resultado);
         	
         	///////////////////////////////////////////////////////////////////////////////// Acaba sua modificacao aqui
         	// envio da acao do volante
         	out.println(resultado);
         	
             // requisicao da posicao do caminhao        	
-        	out.println("r");	
+        	out.println("r");
         }
  
         out.close();
